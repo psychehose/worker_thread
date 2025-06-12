@@ -3,6 +3,7 @@
 #include <iostream>
 #include <mutex>
 
+namespace ph {
 WorkerThreadQueue::WorkerThreadQueue()
     : worker_thread_(&WorkerThreadQueue::workerThreadLoop, this) {}
 
@@ -50,3 +51,4 @@ void WorkerThreadQueue::workerThreadLoop() {
     }
   }
 }
+} // namespace ph

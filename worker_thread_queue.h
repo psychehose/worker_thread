@@ -6,6 +6,8 @@
 #include <queue>
 #include <thread>
 
+namespace ph {
+
 class WorkerThreadQueue {
 
 public:
@@ -28,3 +30,4 @@ private:
   std::thread worker_thread_;
   std::atomic<bool> stop_{false};
 };
+}; // namespace ph
