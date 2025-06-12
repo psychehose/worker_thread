@@ -1,4 +1,4 @@
-
+#pragma once
 
 #include <condition_variable>
 #include <functional>
