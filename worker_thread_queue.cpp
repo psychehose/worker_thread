@@ -19,14 +19,6 @@ void WorkerThreadQueue::start() { stop_ = false; }
 
 void WorkerThreadQueue::stop() { stop_ = true; }
 
-void WorkerThreadQueue::enqueue(std::function<void()> task) {
-  {
-    std::lock_guard<std::mutex> lock(queue_mutex_);
-    tasks_.push(task);
-  }
-  cv_.notify_one(); // awake the worker thread
-}
-
 void WorkerThreadQueue::workerThreadLoop() {
 
   while (true) {
