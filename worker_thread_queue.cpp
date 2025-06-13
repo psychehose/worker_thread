@@ -31,22 +31,22 @@ void WorkerThreadQueue::workerThreadLoop() {
 
   while (true) {
     std::function<void()> task_to_execute;
-    {
-      std::unique_lock<std::mutex> lock(queue_mutex_);
-      cv_.wait(lock, [this] { return !tasks_.empty() || stop_; });
-      if (stop_ && tasks_.empty())
-        break;
+    std::unique_lock<std::mutex> lock(queue_mutex_);
+    cv_.wait(lock, [this] { return !tasks_.empty() || stop_; });
+    if (stop_ && tasks_.empty())
+      break;
 
-      if (!tasks_.empty()) {
-        task_to_execute = std::move(tasks_.front());
-        tasks_.pop();
-      } else {
-        continue;
-      }
+    if (!tasks_.empty()) {
+      task_to_execute = std::move(tasks_.front());
+      tasks_.pop();
+      lock.unlock();
+    } else {
+      continue;
     }
-    if (task_to_execute)
+
+    if (task_to_execute) {
       task_to_execute();
-    else {
+    } else {
       std::cout << "No task to execute" << std::endl;
     }
   }
